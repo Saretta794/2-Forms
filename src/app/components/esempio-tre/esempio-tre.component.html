@@ -1,0 +1,29 @@
+<h4>Custom validator su FormControl</h4>
+
+<div class="my-3">
+    <label for="citta" class="form-label">Città (Roma, Milano, Napoli)</label>
+    <input type="text" id="citta" class="form-control" [formControl]="citta"> 
+    <span class="text-danger" *ngIf="citta.touched && citta.errors">
+        {{citta.errors['info'].msg}} {{citta.errors['info'].accepted}} <!--NB angular mi stampa i singoli valori presenti dentro un array quando stampo lo stesso in html tramite interpolazione-->
+    </span>
+</div>
+
+<hr>
+
+<h4>Custom validator su FormGroup</h4>
+
+<form [formGroup]="frm">
+    <div class="my-3">
+        <label for="password" class="form-label">Password</label>
+        <input [type]="inputType" id="password" class="form-control" formControlName="password">
+        
+        <label for="password_confirm" class="form-label">Conferma Password</label>
+        <input [type]="inputType" id="password_confirm" class="form-control" formControlName="password_confirm"> 
+
+        <button type="button" class="btn btn-primary mt-3" (click)="showHide()">Mostra/Nascondi</button>
+
+        <span class="text-danger" *ngIf="frm.touched && frm.errors"> <!--nb appena un formControl appartenente ad un formGroup è touched lo è tutto il formGroup -->
+            {{frm.errors['msg']}} 
+        </span>
+    </div>
+</form>

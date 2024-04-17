@@ -1,0 +1,58 @@
+<h4>Single FormControl</h4>
+<div class="my-3">
+    <label for="name" class="form-label">Inserisci il nome</label>
+    <input type="text" id="name" class="form-control" [formControl]="nome"> <!-- class = "form-control " = classe bootstrap != [formControl] = "nome" = binding, ovvero legame tra input e form control definito in ts + for/id legano label/input -->
+</div>
+<button type="button" class="btn btn-outline-primary btn-sm" (click)="cambiaNome()">Diventa Ivano</button>
+<button type="button" class="btn btn-outline-primary btn-sm" (click)="stampaValore()">stampa il valore </button>
+
+<hr>
+
+<h4>Single FormControl con validatore</h4>
+<div class="my-3">
+    <label for="nameValidato" class="form-label">Inserisci il nome</label>
+    <input 
+    type="text" 
+    id="nameValidaton" 
+    class="form-control" 
+    [formControl]="nomeConValidatore"
+    [ngClass]="{
+
+        'is-valid':nomeConValidatore.touched && nomeConValidatore.valid,
+        'is-invalid':nomeConValidatore.touched && nomeConValidatore.invalid
+        
+                
+    }"
+    > <!--su qeusto input ho gestito la validazione -> angular mette al tag altre classi oltre quelle di bootstrap che cambiano in base all'utilizzo: ng-pristine (non c'è mai stato scritto nulla) / ng-dirty(anche se cancello qualcosa che ho inserito) + ng-untached (non ci sono mai entrato) / ng-tached (quando ci sono etrato almeno una volta, poi rimane cosi -> ATTENZIONE diventa tached una volta che sono entrato ma anche uscito, ovvero al'uscita dal tag -> posso utilizzare questa classe come espedienete per stilizarre il form, come le altre classi anche) + valid/invalid = si alternano quando inserisco qualcosa o meno || nb nell' [ngClass] posso inserire un array di classi al verificarsi di una condizione , ma anche con un oggetto = versione più utilizzata => [ngClass]="{<classe_da_assegnare>:<boolean>, <altra_classe_da_assegnare>:<boolean>}"-->
+    <button type="button" class="btn btn-outline-primary mt-3" [disabled]="nomeConValidatore.invalid">Invia</button><!--il bottone è disabilitato finche il capo nomeCon Validatore è invalido -> valid e invalid sono due buleani uno in contario dell'altro; esistono entrambi per adattarsi alle diverse direttive che sottointendono logiche diverse alle quali può rispondere meglio un termine piuttosto che l'altro-->
+    <!-- {{nomeConValidatore.invalid}} -->
+    {{nomeConValidatore.errors | json}}
+</div>
+
+<div *ngIf="nomeConValidatore.touched && nomeConValidatore.errors"> <!--nomeConValidatore.touched = fa si che gli errori siano visualizzati quando l'utente è entrato nel campo, altrimenti errore al primo validatore appare appena l'utente stesso atterra sulla rotta del form!! posso usare pristine o durty in base all'esperienza che voglio creare per l'utente (posso anche incrociarli)-->
+    <!-- <pre>{{nomeConValidatore.errors | json}}</pre> -->
+    <span *ngIf="nomeConValidatore.errors['required']" class="text-danger">Inserisci un valore</span> <!--errors non è un oggetto tipizzato, dunque scrivo tra le quadre il required-->
+    <span *ngIf="nomeConValidatore.errors['minlength']" class="text-danger">Inserisci altri {{nomeConValidatore.errors['minlength'].requiredLength - nomeConValidatore.errors['minlength'].actualLength}} caratteri</span> <!--questo meccanismo si può usare al contrario per le text area dove ho un max di caratteri disponibili (ma posso lavorare direttamente con il value ??)-->
+</div>
+
+<div *ngIf="nomeConValidatore.valid">Il form control ha un valore <strong>valid</strong></div>
+
+<hr>
+
+<h4>Single FormControl con validatore "dinamico" e RegExp</h4><!--dinamico = il campo di base non ha un validatore, ma se io faccio qualcosa assume un validatore. --- ESPRESSIONI REGOLARI esistono in tutti i linguaggi del mondo e sono sempre uguali, ovvero sono trasversali (regex 101 = sito)-->
+<div class="my-3">
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" id="have_cc" [formControl]="checkBoxCC"><!--value = "valore" = se il box è checcato assume quel valore senno nessuno, non compare nel form -> in angular se è checcato è = a true, altrimenti false, senza mettere il value -- per fare si che l'input iban compaia solo quando spunto il checkbox potrei usare l'evento click checkbox che però è sbagliato concettualmente (oltre che dare problemi di accessibilità perchè la spunta può avvenire anche con la barra spaziatrice), io posso legarmi allo stato dell'input! -> come sottoscriversi al cambiamento di un valore di un form control(non solo checkbox)? -->
+        <label class="form-check-label" for="have_cc">Ho un conto corrente</label>
+    </div>
+    <div class="d-block my-2"></div>
+    <label for="iban" class="form-label mt-3">Inserisci l'IBAN del conto corrente</label>
+    <input 
+    type="text"
+    id="iban"
+    class="form-control"
+    [formControl]="iban"
+    > <!--collegamento con il ts che ha il controllo sull'input --- come faccio a sapere che i cablaggio è andato bene? = errori in console o cabio valore di default in ts-->
+    <button type="button" class="btn btn-primary mt-3" [disabled]="iban.invalid">Invia</button>
+    
+</div>

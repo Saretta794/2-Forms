@@ -1,0 +1,46 @@
+--- Librerie componenti grafici:
+- bootstrap --> attenzione per la parte di JS, per la quale esistono librerie bootstrap adattate per Angular
+- angular material
+- zorro
+- prime ng
+
+--- Per realizzare reactive forms devo aggiungere ReactiveFomsModule nell'app module ---> unico import
+
+--- Trovo la documentazione relativa ai forms all'interno della documentazione di Angular
+
+--- template driven forms != reactive forms 
+- template driven form --> forms guidati dal template ---> tutti i controlli sono inseriti nell'html + inserimento nel ts del binding bidirezionale
+- reactive form --> è, prima di tutto, un oggetto del controller, ha una variabile e un tipo --> esiste prima nel ts e poi nell'html esiste l'input type text che crea il collegamneto con la vatribaile --> in questo caso lavoro principalmente nel ts, ovvero nel controller --> ottengo una separazione dai compiti fra html e ts mantenendo l'html più pulito + ottengo una maggiore programmabilità dei form stessi --> soprattutto nel caso di form complessi (tanti campi o ocampi connessi con dietro una logica dinamica) si ottiene un codice molto più comprensibile! --> utti gli inserimenti, ricerche e modifiche di parti di stiti sottintendono i form.
+
+--- REACTIVE FORM = 4 classi
+- FormControl
+- FormGroup 
+- FormArray 
+- ControlValueAccessor = poi la vedremo
+
+--- generalmente angular viene utilizzato per realizzare applicazioni web e non siti vetrina puramente estetici, anche se è possibile, in questo secondo caso angular verrebbe utilizzatto senza usarne molte parti!
+
+--- passaggio JS -> Angular --> ricorda che tutto quello che si fa in JS in Angular si fa attraverso un binding: si reagisce ad un evento non direttamenta, ma tramite un observable ad es.
+
+--- angular mi permette di scrivere tanto contenuto in poco codice e questo si vede molto nei form --> io scrivo le regole e angular fa il resto, con Js per lo stesso risultato avrei dovuto scrivere mooooolto piu codice!!
+
+--- FORM GROUP --> dove nasce l'esigenza? nei driven form per ogni campo applico ngModel per salvare il value in una proprietà di un aggetto --> se ho 30 campi dovrei avere un oggetto con 30 chiavi diverse che invio al BE --> esiste un modo più strutturato di realizzare ciò --> posso raggruppare i form control nei form group o form array, che vedremo alla fine e sono dei form group dinamici --> nel form group metto un oggetto costituito da chiavi che a loro volta sono form control
+
+-- FILE .gitignore = comprende i file del progetto angular che verranno esclusi al caricamento del progetto stesso su git
+
+--- l'update nelle richiste http si fa con patch o put 
+--put = rimpiazza tutto l'oggetto
+--patch = cambia una parte dell'oggetto
+(dipende sempre dal server, ma generalmente è cosi)
+
+--- esistono framework fatti apposta per passare un progetto angular su app mobile --> logica uguale con adattamento strumenti
+
+---nestJS porta i concetti di angular nel BE (framework che usano molto nell'azienda di Ivano) --> avere più coerenza
+
+---FORM BUILDER = service di angular che serve a creare i form --> dentro ha i metodi per creare formGroup e formControl --> unico vantaggio rispetto alla creazione dei singoli componenti è che ho una scrittura più compatta
+
+--- è importante conoscere typescript -> typescriptlang.org (documentazione) --> utile per lavorare in angular e node --> ad oggi JS ha quasi tutti i concetti di TS, ma il problema di JS è la compatibilità con i browser, ovevro non tutti lo supportano allo stesso modo --> ricorda: io scrivo in TS, ma poi opera JS --> in futuro TS potrebbe essere superato (TS è una tecnologia Miscrosoft)
+
+---fromArray = li uso quando ho necessità di collezionare informazioni --> es domanda di un form: quali sono i tuoi hobby? = ho la possibilità di inserirne uno come molti = ripeto un formControl --> posso creare un formArray di formGroup anche --> es varie carte e/o indirizzi che posso inserire su amazon
+
+---esistono i reactive from forrtemente tipizzati (da angular 15)  --> mi permettono di creare una corrispondenza tra un form e un'interfaccia, ovvero un modello --> es ho un'interfaccia dipendente che ha nome cognome e stipendio e voglio creare un form il cui value voglio che sia conforme alla mia interface

@@ -1,0 +1,56 @@
+<h4>FormArray di FormControls</h4> <!--ottengo un array di stringhe -> non si usa moltissimo, si usa di più con i formGroup-->
+<div class="row align-items-end" *ngFor="let e of indirizzi_email.controls; let i = index; let primo=first; let ultimo=last"><!--for e id diventano attributi // first = true alla prima iterazione - last all'ultima-->
+    <div class="col-8">
+        <label [for]="'email_' + i" class="form-label">inserisci un'email</label>
+        <input [id]="'email_' + i" type="email" class="form-control" [formControl]="e">
+        <span class="text-danger" *ngIf="e.errors && e.errors['email']">Inserisci un indirizzo email valido</span>
+    </div>
+
+    <div class="col">
+        <button type="button" class="btn btn-outline-danger" (click)="eliminaEmail(i)" [disabled]="i===0">Elimina</button> <!--disabilito il bottone elimina per il primo elemento -> posso mettere anche "primo"(vedi sopra)-->
+        <button type="button" class="btn btn-ouutline-secondary" [disabled]="indirizzi_email.controls.length > 1 && !primo" (click)="su(i)">Sposta su</button>
+        <button type="button" class="btn btn-ouutline-secondary" (click)="giu(i)" [disabled]="indirizzi_email.controls.length > 1 && !ultimo">Sposta giù</button>
+        
+    </div>
+</div>
+
+<button type="button" class="btn btn-primary mt-3" (click)="aggiungiEmail()">Aggiungi</button>
+<button type="button" class="btn btn-danger mt-3 ms-2" (click)="eliminaTutteEmail()">Elimina tutti</button>
+
+<h4 class="mt-3">FormArray di FormGroup</h4>
+
+<div class="row">
+    <div class="col-6">
+        <form [formGroup]="frm">
+            <div class="my-3">
+        
+                <label for="nome" class="form-label">Nome</label>
+                <input type="text" id="nome" class="form-control" formControlName="nome">
+                
+                <label for="cognome" class="form-label">Cognome</label>
+                <input type="text" id="cognome" class="form-control" formControlName="cognome"> 
+        
+        
+            </div>
+            <div class="row" *ngFor="let indirizzo of indirizziControls" [formGroup]="indirizzo">
+                <div class="col">
+                    <label>Piazza/Via</label>
+                    <input type="text" class="form-control" formControlName="via">
+                </div>
+                <div class="col">
+                    <label>Numero Civico</label>
+                    <input type="text" class="form-control" formControlName="civico">
+                </div>
+                <div class="col">
+                    <label>CAP</label>
+                    <input type="text" class="form-control" formControlName="cap">
+                </div>
+            </div>
+        </form>
+        
+    </div>
+    <div class="col"> 
+       <pre> {{frm.value | json}} </pre> <!--vedo il value del mio form-->
+    </div>
+</div>
+<button type="button" class="btn btn-primary" (click)="aggiungiIndirizzo()">Aggiungi Indirizzo</button>

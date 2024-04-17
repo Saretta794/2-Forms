@@ -1,0 +1,76 @@
+<h4>Esempio di FormGroup</h4>
+
+<form [formGroup]="persona" (ngSubmit)="inviaNomeCognome()"><!--faccio un bindig con il form group + la struttura ricalca quella del formgroup stesso + formControl nei diversi input che non è un bindig che vuole il nome della variabile salvata nel ts nella quale salvare il valore, ma una direttiva che vuole che io gli dia il nome del formControl che costituisce il nome della chiave del formGroup --- nb generalmente è difficile vedere un formControl isolato, a meno che io non abbia a che fare con una barra di ricerca o un login con soli due campi. I formControl li trovo quasi sempre all'interno dei forGroup che non è detto che sia il tag form (l'importante è che ci sia un tag genitore con all'interno tag figli)-->
+
+    <div class="my-3">
+        <label for="name" class="form-label">Nome</label>
+        <input type="text" id="name" class="form-control" formControlName="nome"> 
+        <!-- <span *ngIf="persona.get('nome')?.errors"></span> se volessi visualizzare a schermo gli errori dovuti all'eventuale mancato superamento dei validatori ad esso associati  -->
+    </div>
+
+    <div class="my-3">
+        <label for="last_name" class="form-label">Cognome</label>
+        <input type="text" id="last_name" class="form-control" formControlName="cognome"> 
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="persona.invalid">Invia</button><!--l'evento submit lo inserisco nel tag form e non nel button tramite un click (devo poetr gestire il submit anche tramite invio della tastiera) + definisco l'abilitazione del button definendo una condizione di validità per il formGroup e non per il singolo formControl = il bottone viene abilitato quando vengono superati tutti i validatori associati ai singoli formControl che fanno parte del FormGroup -->
+</form>
+
+<hr>
+
+<h4>Esempio di FormGroup annidato</h4>
+<form [formGroup]="anagrafica" (ngSubmit)="inviaAnagrafica()">
+
+    <div class="my-3">
+
+        <label for="name" class="form-label">Nome</label>
+        <input 
+        type="text" 
+        id="name" 
+        class="form-control" 
+        formControlName="nome"
+        [ngClass]="{'is-invalid': getCampo('nome').touched && getCampo('nome').invalid }"> 
+         <!--[ngClass]="{'is-invalid': anagrafica.get('nome')!.touched && anagrafica.get('nome')!.invalid }" ma posso accorciare -> vedi getter -->
+    
+    </div>
+
+    <div class="my-3">
+
+        <label for="last_name" class="form-label">Cognome</label>
+        <input 
+        type="text" 
+        id="last_name" 
+        class="form-control" 
+        formControlName="cognome"
+        [ngClass]="{'is-invalid': getCampo('cognome').touched && getCampo('cognome').invalid }"> 
+
+    </div>
+
+    <!--formGroup figlio-->
+
+    <div formGroupName="indirizzo"><!--con formformGroupName="nome formGroup figlio" identifico la relativa parte di html -> utilizzare il div potrebbe dare problemi a livello di formattazione se ne applico una che interviene sui div -> posso utilizzare il tag "ng-container", cosi angular capisce che quello indicato è un sottocontesto formGroupName (è uno pseudo elemento html) -->
+
+        <div class="my-3">
+
+            <label for="via" class="form-label">Via</label>
+            <input 
+            type="text" 
+            id="via" 
+            class="form-control" 
+            formControlName="via"> 
+
+        </div>
+    
+        <div class="my-3">
+
+            <label for="civico" class="form-label">Civico</label>
+            <input type="text" id="civico" class="form-control" formControlName="civico"> 
+
+        </div>
+
+    </div>
+    <button type="button" class="btn btn-success" (click)="compilaFormGroup()">Compila</button>
+    <button type="button" class="btn btn-info me-2" (click)="compilaIndirizzo()">Compila indirizzo</button>
+    <br>
+    <hr>
+    <button type="submit" class="btn btn-primary">Invia</button>
+</form>
